@@ -1,0 +1,387 @@
+/* ==================================================
+   Rexroad Google Maps Location Card
+   ================================================== */
+
+.rr-location-card {
+	display: grid;
+	grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+	gap: 0;
+	max-width: 1100px;
+	margin: 2.5rem auto;
+	overflow: hidden;
+	border: 1px solid var(--rr-color-border);
+	border-radius: 1.4rem;
+	background: #fff;
+	box-shadow: 0 1.5rem 4rem rgba(15, 23, 40, 0.1);
+}
+
+.rr-location-card__details {
+	padding: clamp(1.75rem, 4vw, 3rem);
+}
+
+.rr-location-card__details .rr-eyebrow {
+	margin-bottom: 0.65rem;
+	color: #d62828;
+	font-size: 0.75rem;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.rr-location-card__details h3 {
+	margin-top: 0;
+	margin-bottom: 1rem;
+	color: var(--rr-color-dark);
+}
+
+.rr-location-card__details p {
+	line-height: 1.7;
+}
+
+.rr-location-card__nap {
+	display: grid;
+	gap: 0.35rem;
+	margin: 1.5rem 0;
+	padding: 1rem 0 1rem 1.25rem;
+	border-left: 3px solid #d62828;
+}
+
+.rr-location-card__nap strong {
+	color: var(--rr-color-dark);
+	font-size: 1.05rem;
+}
+
+.rr-location-card__nap span {
+	color: #5f6b7a;
+	line-height: 1.5;
+}
+
+.rr-location-card__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1.25rem;
+	margin-top: 1.75rem;
+}
+
+.rr-location-card__secondary {
+	color: var(--rr-color-dark);
+	font-weight: 800;
+	text-decoration: none;
+	transition: color 160ms ease;
+}
+
+.rr-location-card__secondary:hover,
+.rr-location-card__secondary:focus-visible {
+	color: #d62828;
+}
+
+.rr-location-card__map {
+	position: relative;
+	min-height: 28rem;
+	background: #e5e7eb;
+}
+
+.rr-location-card__map iframe {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+/* Tablet */
+@media (max-width: 850px) {
+	.rr-location-card {
+		grid-template-columns: 1fr;
+	}
+
+	.rr-location-card__map {
+		min-height: 24rem;
+	}
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+	.rr-location-card {
+		margin: 2rem auto;
+		border-radius: 1rem;
+	}
+
+	.rr-location-card__details {
+		padding: 1.5rem;
+	}
+
+	.rr-location-card__map {
+		min-height: 20rem;
+	}
+
+	.rr-location-card__actions {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.rr-location-card__actions .rr-button {
+		width: 100%;
+		text-align: center;
+	}
+
+	.rr-location-card__secondary {
+		padding: 0.5rem 0;
+		text-align: center;
+	}
+}
+
+/* Shared numbered-card component used by About, Contact, and service content. */
+.entry-content .rr-card-grid,
+.rr-article .rr-card-grid {
+    display: grid;
+    width: 100%;
+    gap: 1.5rem;
+}
+
+.entry-content .rr-card-grid--3,
+.rr-article .rr-card-grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.entry-content .rr-card,
+.rr-article .rr-card {
+    position: relative;
+    min-width: 0;
+    min-height: 250px;
+    padding: 1.75rem;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-top: 4px solid var(--rr-color-accent);
+    border-radius: 18px;
+    box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.entry-content .rr-card::after,
+.rr-article .rr-card::after {
+    position: absolute;
+    right: -44px;
+    bottom: -64px;
+    width: 150px;
+    height: 150px;
+    background: rgba(198, 40, 40, 0.06);
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+}
+
+.entry-content .rr-card:hover,
+.entry-content .rr-card:focus-within,
+.rr-article .rr-card:hover,
+.rr-article .rr-card:focus-within {
+    box-shadow: 0 20px 48px rgba(15, 23, 42, 0.13);
+    transform: translateY(-4px);
+}
+
+.entry-content .rr-card__number,
+.rr-article .rr-card__number {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.7rem;
+    height: 2.7rem;
+    margin-bottom: 1.2rem;
+    background: #fff1f1;
+    color: var(--rr-color-accent);
+    border: 1px solid #fecaca;
+    border-radius: 50%;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+}
+
+.entry-content .rr-card h3,
+.rr-article .rr-card h3 {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 0.75rem;
+    color: var(--rr-color-dark);
+    font-size: 1.35rem;
+}
+
+.entry-content .rr-card p,
+.rr-article .rr-card p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: #4b5563;
+    line-height: 1.7;
+}
+
+.entry-content .rr-card p + p,
+.rr-article .rr-card p + p {
+    margin-top: 1rem;
+}
+
+@media (max-width: 1020px) {
+    .entry-content .rr-card-grid--3,
+    .rr-article .rr-card-grid--3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .entry-content .rr-card-grid--3,
+    .rr-article .rr-card-grid--3 {
+        grid-template-columns: 1fr;
+    }
+
+    .entry-content .rr-card,
+    .rr-article .rr-card {
+        min-height: 0;
+        padding: 1.4rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .entry-content .rr-card,
+    .rr-article .rr-card {
+        transition: none;
+    }
+}
+
+
+/* Shared content panels used by the Contact and About pages. */
+.entry-content .rr-check-list,
+.rr-article .rr-check-list {
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.entry-content .rr-check-list li,
+.rr-article .rr-check-list li {
+    position: relative;
+    padding-left: 1.8rem;
+    line-height: 1.55;
+}
+
+.entry-content .rr-check-list li + li,
+.rr-article .rr-check-list li + li {
+    margin-top: 0.7rem;
+}
+
+.entry-content .rr-check-list li::before,
+.rr-article .rr-check-list li::before {
+    position: absolute;
+    top: 0.12rem;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    background: var(--rr-color-accent);
+    color: #ffffff;
+    border-radius: 50%;
+    content: "✓";
+    font-size: 0.72rem;
+    font-weight: 900;
+}
+
+.entry-content .rr-values .rr-section-heading,
+.rr-article .rr-values .rr-section-heading {
+    margin-bottom: 2rem;
+}
+
+.rr-article > .rr-callout,
+.rr-article > .rr-cta {
+    padding: clamp(1.75rem, 4vw, 3rem);
+    background: linear-gradient(115deg, #111827 0%, #172033 62%, #34232d 100%);
+    color: #ffffff;
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+}
+
+.rr-article > .rr-callout .rr-eyebrow,
+.rr-article > .rr-cta .rr-eyebrow {
+    color: #fca5a5;
+}
+
+.rr-article > .rr-callout h3,
+.rr-article > .rr-cta h2 {
+    margin: 0 0 0.75rem;
+    color: #ffffff;
+    line-height: 1.15;
+}
+
+.rr-article > .rr-callout p,
+.rr-article > .rr-cta p {
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.rr-article > .gform_wrapper {
+    margin: 0;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-top: 4px solid var(--rr-color-accent);
+    border-radius: 1.25rem;
+    box-shadow: 0 16px 42px rgba(15, 23, 42, 0.09);
+}
+
+.rr-article > .rr-content-section {
+    padding-top: clamp(2.75rem, 6vw, 4.5rem);
+    border-top: 1px solid #e5e7eb;
+}
+
+.rr-article .rr-section-heading {
+    max-width: 48rem;
+}
+
+.rr-article .rr-section-heading h2 {
+    margin: 0 0 0.8rem;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    line-height: 1.12;
+}
+
+.rr-article .rr-section-heading > p:last-child {
+    margin-bottom: 0;
+    color: #4b5563;
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.rr-article .rr-info-card {
+    padding: clamp(1.4rem, 3vw, 2rem);
+    background: #fff7f7;
+    border: 1px solid #fecaca;
+    border-left: 4px solid var(--rr-color-accent);
+    border-radius: 1rem;
+}
+
+.rr-article .rr-info-card > :first-child {
+    margin-top: 0;
+}
+
+.rr-article .rr-info-card > :last-child {
+    margin-bottom: 0;
+}
+
+.rr-article .rr-cta {
+    text-align: center;
+}
+
+.rr-article .rr-cta p {
+    max-width: 42rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (max-width: 700px) {
+    .rr-article > .rr-callout,
+    .rr-article > .rr-cta {
+        border-radius: 1rem;
+    }
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "layout": {
+      "contentSize": "840px",
+      "wideSize": "1200px"
+    },
+    "color": {
+      "palette": [
+        { "slug": "dark", "name": "Dark", "color": "#111827" },
+        { "slug": "white", "name": "White", "color": "#ffffff" },
+        { "slug": "light-gray", "name": "Light Gray", "color": "#f3f4f6" },
+        { "slug": "red", "name": "Rexroad Red", "color": "#c62828" },
+        { "slug": "dark-red", "name": "Dark Red", "color": "#991b1b" }
+      ]
+    },
+    "spacing": {
+      "units": ["px", "rem", "%", "vw"]
+    },
+    "typography": {
+      "fluid": true,
+      "fontFamilies": [
+        {
+          "slug": "system-sans",
+          "name": "System Sans",
+          "fontFamily": "Arial, Helvetica, sans-serif"
+        }
+      ]
+    }
+  },
+  "styles": {
+    "typography": {
+      "fontFamily": "var:preset|font-family|system-sans",
+      "lineHeight": "1.65"
+    },
+    "color": {
+      "text": "#1f2937",
+      "background": "#ffffff"
+    },
+    "elements": {
+      "button": {
+        "color": {
+          "background": "#c62828",
+          "text": "#ffffff"
+        },
+        "border": {
+          "radius": "7px"
+        },
+        "typography": {
+          "fontWeight": "800"
+        }
+      },
+      "heading": {
+        "color": {
+          "text": "#111827"
+        },
+        "typography": {
+          "lineHeight": "1.2"
+        }
+      },
+      "link": {
+        "color": {
+          "text": "#c62828"
+        }
+      }
+    }
+  }
+}

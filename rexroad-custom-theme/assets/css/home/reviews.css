@@ -1,0 +1,442 @@
+.rr-reviews {
+	position: relative;
+	overflow: hidden;
+	padding: clamp(5.5rem, 8vw, 8rem) 0;
+	background: #0f1728;
+	color: #fff;
+}
+
+.rr-reviews__accent {
+	position: absolute;
+	border: 1px solid rgba(214, 40, 40, 0.2);
+	border-radius: 999px;
+	pointer-events: none;
+}
+
+.rr-reviews__accent--one {
+	width: 32rem;
+	height: 32rem;
+	top: -18rem;
+	right: -10rem;
+}
+
+.rr-reviews__accent--two {
+	width: 18rem;
+	height: 18rem;
+	bottom: -10rem;
+	left: -7rem;
+}
+
+.rr-reviews__header {
+	display: grid;
+	grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.55fr);
+	gap: clamp(2rem, 6vw, 6rem);
+	align-items: end;
+	margin-bottom: 2rem;
+}
+
+.rr-reviews .rr-section-heading__eyebrow {
+	color: #f04b4b;
+}
+
+.rr-reviews .rr-section-heading__title {
+	max-width: 13ch;
+	margin-bottom: 0;
+	color: #fff;
+}
+
+.rr-reviews .rr-section-heading__title span {
+	color: #f04b4b;
+}
+
+.rr-reviews__summary {
+	padding-left: 1.5rem;
+	border-left: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.rr-reviews__stars,
+.rr-review-card__stars {
+	color: #ffb521;
+	letter-spacing: 0.12em;
+}
+
+.rr-reviews__stars {
+	margin-bottom: 0.85rem;
+	font-size: 1.15rem;
+}
+
+.rr-reviews__summary p {
+	margin: 0;
+	color: #b8c1d3;
+	line-height: 1.75;
+}
+
+
+/* ========================================
+   LIVE GOOGLE REVIEWS SUMMARY
+   ======================================== */
+
+.rr-google-reviews-live {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 1.4rem;
+	margin: 0 0 clamp(2rem, 4vw, 3rem);
+	padding: 1.35rem 1.6rem;
+	overflow: hidden;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 1.25rem;
+	background:
+		linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.08),
+			rgba(255, 255, 255, 0.035)
+		);
+	box-shadow: 0 1.25rem 3rem rgba(2, 6, 23, 0.2);
+}
+
+.rr-google-reviews-live::before {
+	content: "";
+	position: absolute;
+	width: 10rem;
+	height: 10rem;
+	top: -6rem;
+	right: -3rem;
+	border: 1px solid rgba(240, 75, 75, 0.22);
+	border-radius: 999px;
+	pointer-events: none;
+}
+
+.rr-google-reviews-live__icon {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	width: 3.75rem;
+	height: 3.75rem;
+	flex: 0 0 3.75rem;
+	place-items: center;
+	border-radius: 1rem;
+	background: #fff;
+	color: #202124;
+	font-size: 1.7rem;
+	font-weight: 900;
+	line-height: 1;
+	box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.rr-google-reviews-live__content {
+	position: relative;
+	z-index: 1;
+	flex: 1;
+	min-width: 0;
+}
+
+.rr-google-reviews-live__eyebrow {
+	display: block;
+	margin-bottom: 0.4rem;
+	color: #f04b4b;
+	font-size: 0.72rem;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+/*
+ * These selectors cover likely plugin output wrappers.
+ */
+.rr-google-reviews-live .rexroad-google-reviews,
+.rr-google-reviews-live .rexroad-google-reviews-summary,
+.rr-google-reviews-live .rexroad-ai-seo-google-reviews,
+.rr-google-reviews-live .rexroad-ai-seo-google-reviews-summary {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.6rem 1rem;
+	margin: 0;
+	color: #fff;
+}
+
+.rr-google-reviews-live strong {
+	color: #fff;
+	font-size: clamp(1.6rem, 3vw, 2.25rem);
+	font-weight: 900;
+	letter-spacing: -0.03em;
+}
+
+.rr-google-reviews-live .stars,
+.rr-google-reviews-live .google-stars {
+	color: #ffb521;
+	letter-spacing: 0.1em;
+}
+
+.rr-google-reviews-live p {
+	margin: 0.25rem 0 0;
+	color: #b8c1d3;
+	line-height: 1.6;
+}
+
+.rr-google-reviews-live a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	color: #fff;
+	font-weight: 800;
+	text-decoration: none;
+	transition: color 160ms ease;
+}
+
+.rr-google-reviews-live a:hover,
+.rr-google-reviews-live a:focus-visible {
+	color: #f04b4b;
+}
+
+
+/* ========================================
+   REVIEW CARDS
+   ======================================== */
+
+.rr-reviews__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.25rem;
+}
+
+.rr-review-card {
+	position: relative;
+	display: flex;
+	min-height: 25rem;
+	flex-direction: column;
+	padding: clamp(1.75rem, 3vw, 2.4rem);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 1.35rem;
+	background: rgba(255, 255, 255, 0.055);
+	box-shadow: 0 1.5rem 4rem rgba(2, 6, 23, 0.18);
+	transition:
+		transform 180ms ease,
+		border-color 180ms ease,
+		background 180ms ease;
+}
+
+.rr-review-card:hover {
+	transform: translateY(-0.4rem);
+	border-color: rgba(240, 75, 75, 0.45);
+	background: rgba(255, 255, 255, 0.075);
+}
+
+.rr-review-card--featured {
+	border-color: rgba(240, 75, 75, 0.42);
+	background:
+		linear-gradient(
+			145deg,
+			rgba(214, 40, 40, 0.22),
+			rgba(255, 255, 255, 0.06)
+		);
+}
+
+.rr-review-card__quote-mark {
+	position: absolute;
+	top: 0.5rem;
+	right: 1.5rem;
+	color: rgba(255, 255, 255, 0.08);
+	font-family: Georgia, serif;
+	font-size: 8rem;
+	line-height: 1;
+}
+
+.rr-review-card__top {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 2.25rem;
+}
+
+.rr-review-card__source {
+	color: #8994a9;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.rr-review-card blockquote {
+	position: relative;
+	z-index: 1;
+	flex: 1;
+	margin: 0;
+}
+
+.rr-review-card blockquote p {
+	margin: 0;
+	color: #f8fafc;
+	font-size: clamp(1.35rem, 2vw, 1.75rem);
+	font-weight: 700;
+	line-height: 1.42;
+	letter-spacing: -0.025em;
+}
+
+.rr-review-card footer {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+	margin-top: 2.25rem;
+	padding-top: 1.5rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rr-review-card__avatar {
+	display: grid;
+	width: 2.65rem;
+	height: 2.65rem;
+	flex: 0 0 auto;
+	place-items: center;
+	border-radius: 0.75rem;
+	background: #d62828;
+	color: #fff;
+	font-weight: 800;
+}
+
+.rr-review-card footer strong,
+.rr-review-card footer span {
+	display: block;
+}
+
+.rr-review-card footer strong {
+	color: #fff;
+}
+
+.rr-review-card footer div > span {
+	margin-top: 0.2rem;
+	color: #8994a9;
+	font-size: 0.85rem;
+}
+
+
+/* ========================================
+   REVIEWS CTA
+   ======================================== */
+
+.rr-reviews__cta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2rem;
+	margin-top: 1.5rem;
+	padding: clamp(1.5rem, 3vw, 2rem) clamp(1.5rem, 4vw, 2.75rem);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 1.25rem;
+	background: rgba(255, 255, 255, 0.04);
+}
+
+.rr-reviews__cta-kicker {
+	display: block;
+	margin-bottom: 0.45rem;
+	color: #f04b4b;
+	font-size: 0.78rem;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.rr-reviews__cta h3 {
+	margin: 0;
+	color: #fff;
+	font-size: clamp(1.35rem, 2.5vw, 2rem);
+}
+
+.rr-reviews__actions {
+	display: flex;
+	align-items: center;
+	gap: 1.25rem;
+}
+
+.rr-reviews__secondary-link {
+	color: #fff;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.rr-reviews__secondary-link:hover,
+.rr-reviews__secondary-link:focus-visible {
+	color: #f04b4b;
+}
+
+
+/* ========================================
+   TABLET
+   ======================================== */
+
+@media (max-width: 980px) {
+	.rr-reviews__header {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	.rr-reviews__summary {
+		max-width: 42rem;
+	}
+
+	.rr-reviews__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.rr-review-card {
+		min-height: auto;
+	}
+}
+
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 700px) {
+	.rr-reviews__summary {
+		padding-left: 0;
+		border-left: 0;
+	}
+
+	.rr-google-reviews-live {
+		align-items: flex-start;
+		gap: 1rem;
+		padding: 1.15rem;
+	}
+
+	.rr-google-reviews-live__icon {
+		width: 3rem;
+		height: 3rem;
+		flex-basis: 3rem;
+		border-radius: 0.8rem;
+		font-size: 1.3rem;
+	}
+
+	.rr-reviews__cta,
+	.rr-reviews__actions {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.rr-reviews__secondary-link {
+		padding: 0.5rem 0;
+		text-align: center;
+	}
+}
+
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	.rr-review-card {
+		transition: none;
+	}
+
+	.rr-review-card:hover {
+		transform: none;
+	}
+}

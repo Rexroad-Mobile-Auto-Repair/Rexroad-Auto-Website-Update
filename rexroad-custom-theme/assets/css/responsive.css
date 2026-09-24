@@ -1,0 +1,338 @@
+@media (max-width: 1260px) {
+    .site-header__inner {
+        grid-template-columns: minmax(170px, 0.65fr) minmax(500px, 1.7fr) auto;
+        gap: 18px;
+    }
+
+    .custom-logo {
+        max-width: 220px;
+        max-height: 58px;
+    }
+
+    .primary-navigation > ul,
+    .primary-navigation > .menu,
+    .primary-navigation .menu > ul {
+        gap: 13px;
+    }
+
+    .primary-navigation a {
+        font-size: 0.84rem;
+    }
+
+    .header-phone__number {
+        display: none;
+    }
+}
+
+@media (max-width: 1020px) {
+    .admin-bar .site-header {
+        top: 32px;
+    }
+
+    .header-topbar__inner {
+        justify-content: flex-start;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .header-topbar__inner::-webkit-scrollbar {
+        display: none;
+    }
+
+    .header-topbar__service-area {
+        display: none;
+    }
+
+    .site-header__inner {
+        position: relative;
+        display: flex;
+        width: min(100% - 32px, 1200px);
+        min-height: 78px;
+    }
+
+    .custom-logo {
+        max-width: 230px;
+        max-height: 54px;
+    }
+
+    .menu-toggle {
+        display: inline-flex;
+    }
+
+    .header-navigation-panel {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        display: none;
+        max-height: calc(100vh - 112px);
+        padding: 20px 16px 24px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: #ffffff;
+        border-top: 1px solid var(--rr-color-border);
+        border-bottom: 1px solid var(--rr-color-border);
+        box-shadow: var(--rr-shadow);
+    }
+
+    .header-navigation-panel.is-open {
+        display: flex;
+        align-items: stretch;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .primary-navigation > ul,
+    .primary-navigation > .menu,
+    .primary-navigation .menu > ul {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 2px;
+        width: 100%;
+    }
+
+    .primary-navigation,
+    .primary-navigation li {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .primary-navigation a {
+        padding: 13px 8px;
+        font-size: 1rem;
+        border-bottom: 1px solid #eef0f3;
+    }
+
+    .primary-navigation a::after,
+    .primary-navigation .menu-item-has-children > a::before {
+        display: none;
+    }
+
+    .primary-navigation .sub-menu,
+    .primary-navigation .children {
+        position: static;
+        right: auto;
+        left: auto;
+        display: grid;
+        width: calc(100% - 14px);
+        max-width: calc(100% - 14px);
+        min-width: 0;
+        margin: 0 0 4px 14px;
+        padding: 2px 0 2px 14px;
+        background: transparent;
+        border: 0;
+        border-left: 2px solid #e5e7eb;
+        border-radius: 0;
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .primary-navigation li:hover > .sub-menu,
+    .primary-navigation li:focus-within > .sub-menu,
+    .primary-navigation li:hover > .children,
+    .primary-navigation li:focus-within > .children {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .primary-navigation .sub-menu a,
+    .primary-navigation .children a {
+        padding: 10px 8px;
+        color: #4b5563;
+        font-size: 0.94rem;
+        border-bottom: 1px solid #f1f3f5;
+        border-radius: 0;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .header-actions {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .header-phone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 16px;
+        background: var(--rr-color-muted);
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .header-phone__number {
+        display: inline;
+        font-size: 1.1rem;
+    }
+
+    .header-schedule-button {
+        width: 100%;
+    }
+
+    .site-footer__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 782px) {
+    .admin-bar .site-header {
+        top: 46px;
+    }
+}
+
+@media (max-width: 480px) {
+    .rr-container {
+        width: min(100% - 24px, var(--rr-content-width));
+    }
+
+    .header-topbar__inner {
+        min-height: 32px;
+        font-size: 0.72rem;
+    }
+
+    .header-topbar__item + .header-topbar__item::before {
+        margin: 0 12px;
+    }
+
+    .site-header__inner {
+        min-height: 72px;
+    }
+
+    /*
+     * Mobile logo fix:
+     * Prevent the branding/logo from being stretched by the flex header.
+     */
+    .site-branding {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 0;
+    }
+
+    .custom-logo-link {
+        display: block;
+        width: auto;
+        line-height: 0;
+    }
+
+    .custom-logo {
+        display: block;
+        width: 190px;
+        max-width: 100%;
+        height: auto;
+        max-height: none;
+        object-fit: contain;
+    }
+
+    /*
+     * Fallback text logo.
+     * Keep RE + X + ROAD locked together on mobile.
+     */
+    .site-title {
+        display: inline-grid;
+        grid-template-columns: repeat(3, max-content);
+        align-items: center;
+        justify-content: start;
+        column-gap: 0;
+        width: max-content;
+        max-width: 100%;
+        font-size: 1.42rem;
+    }
+
+    .site-title__rex,
+    .site-title__x,
+    .site-title__road {
+        margin: 0;
+        padding: 0;
+    }
+
+    .site-title__x {
+        margin-inline: -0.04em;
+    }
+
+    .site-title__tagline {
+        grid-column: 1 / -1;
+    }
+
+    .header-navigation-panel {
+        max-height: calc(100vh - 104px);
+    }
+}
+
+/* Homepage hero */
+@media (max-width: 1100px) {
+    .rr-hero__layout {
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 0.85fr);
+        gap: 3rem;
+    }
+
+    .rr-hero__title {
+        font-size: clamp(3.15rem, 6vw, 5rem);
+    }
+}
+
+@media (max-width: 900px) {
+    .rr-hero {
+        min-height: 0;
+        padding-top: 4.5rem;
+    }
+
+    .rr-hero__layout {
+        grid-template-columns: 1fr;
+    }
+
+    .rr-hero__content {
+        max-width: 760px;
+    }
+
+    .rr-hero__visual {
+        max-width: 700px;
+        margin-inline: auto;
+    }
+}
+
+/* Final mobile REXROAD logo fix */
+@media (max-width: 480px) {
+    .site-title {
+        display: inline-flex !important;
+        align-items: baseline !important;
+        flex-wrap: wrap !important;
+        gap: 0 !important;
+        width: max-content !important;
+        max-width: 100% !important;
+        white-space: nowrap !important;
+        font-size: 1.42rem !important;
+    }
+
+    .site-title__rex,
+    .site-title__x,
+    .site-title__road {
+        display: inline-block !important;
+        flex: 0 0 auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: auto !important;
+        white-space: nowrap !important;
+    }
+
+    .site-title__x {
+        margin-inline: -0.04em !important;
+    }
+
+    .site-title__tagline {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        white-space: normal !important;
+    }
+}
+/* Keep bottom CTA panels from touching the footer on mobile. */
+@media (max-width: 640px) {
+    .entry-content > .rr-cta-panel,
+    .entry-content .rr-article > .rr-cta {
+        margin-bottom: 32px;
+    }
+}
