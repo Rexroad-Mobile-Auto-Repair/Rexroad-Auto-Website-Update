@@ -702,15 +702,15 @@ return array(
 						array( 2019, 2026 ),
 					),
 				),
-				'model:c-k-2500' => array(
-					'slug'  => 'c-k-2500',
+				'model:ck-2500' => array(
+					'slug'  => 'ck-2500',
 					'name'  => 'C/K 2500',
 					'years' => array(
 						array( 2000, 2000 ),
 					),
 				),
-				'model:c-k-3500' => array(
-					'slug'  => 'c-k-3500',
+				'model:ck-3500' => array(
+					'slug'  => 'ck-3500',
 					'name'  => 'C/K 3500',
 					'years' => array(
 						array( 2000, 2000 ),

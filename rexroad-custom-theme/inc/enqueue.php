@@ -63,6 +63,11 @@ function rexroad_custom_assets(): void {
         $styles['rexroad-custom-services']   = '/assets/css/services.css';
         $styles['rexroad-custom-blog']       = '/assets/css/blog.css';
         $styles['rexroad-custom-forms']      = '/assets/css/forms.css';
+
+        if ( is_page_template( 'page-vehicles.php' ) || is_page_template( 'page-vehicle-make.php' ) || is_page_template( 'page-vehicle-model.php' ) ) {
+            $styles['rexroad-custom-vehicles'] = '/assets/css/vehicles.css';
+        }
+
         $styles['rexroad-custom-responsive'] = '/assets/css/responsive.css';
 
         foreach ( $styles as $handle => $relative_path ) {
@@ -89,6 +94,16 @@ function rexroad_custom_assets(): void {
             get_template_directory_uri() . '/assets/js/homepage.js',
             array(),
             rexroad_custom_asset_version( '/assets/js/homepage.js' ),
+            true
+        );
+    }
+
+    if ( is_page_template( 'page-vehicles.php' ) ) {
+        wp_enqueue_script(
+            'rexroad-custom-vehicles',
+            get_template_directory_uri() . '/assets/js/vehicles.js',
+            array(),
+            rexroad_custom_asset_version( '/assets/js/vehicles.js' ),
             true
         );
     }

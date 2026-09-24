@@ -18,7 +18,17 @@ $cases = array(
 	array( 'F-150', 'f-150' ),
 	array( 'Mercedes-Benz', 'mercedes-benz' ),
 	array( 'Land Rover', 'land-rover' ),
-	array( 'C/K 2500', 'c-k-2500' ),
+	// WordPress's own sanitize_title_with_dashes() strips disallowed
+	// characters like "/" rather than hyphenating them — "ck-2500", not
+	// "c-k-2500". Matching that (not our own prior behavior) is the
+	// whole point of this case: it must equal WordPress's real output.
+	array( 'C/K 2500', 'ck-2500' ),
+	array( 'C/K 3500', 'ck-3500' ),
+	// Synthetic — no current catalog name contains a period, but a
+	// future one might. WordPress's sanitize_title_with_dashes()
+	// explicitly converts "." to "-" before its generic strip; this
+	// locks in that we match it, not just today's 615 real names.
+	array( 'R.S. Turbo', 'r-s-turbo' ),
 	array( 'MX-5 Miata', 'mx-5-miata' ),
 	array( '300M', '300m' ),
 	array( '4Runner', '4runner' ),
