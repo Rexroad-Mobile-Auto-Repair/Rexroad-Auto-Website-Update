@@ -14,6 +14,7 @@ $rexroad_custom_includes = array(
 	'/inc/menus.php',
 	'/inc/custom-post-types.php',
 	'/inc/vehicle-informer.php',
+	'/inc/vehicles/vehicles.php',
 	'/inc/structured-data.php',
 	'/inc/schema-home.php',
 	'/inc/schema-about.php',
