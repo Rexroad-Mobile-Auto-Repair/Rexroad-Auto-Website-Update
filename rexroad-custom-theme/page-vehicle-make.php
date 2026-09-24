@@ -48,6 +48,16 @@ $rexroad_phone         = (string) get_theme_mod( 'rexroad_header_phone', '469-46
 $rexroad_phone_href    = rexroad_custom_phone_href( $rexroad_phone );
 $rexroad_schedule_url  = (string) get_theme_mod( 'rexroad_schedule_url', home_url( '/contact-us/' ) );
 
+/*
+ * Service-area context reuses the SAME theme configuration already
+ * shown in the footer — never a new, separately-maintained city list.
+ */
+$rexroad_vehicle_service_area_raw = (string) get_theme_mod(
+	'rexroad_footer_service_areas',
+	"Frisco\nProsper\nLittle Elm\nThe Colony\nCelina\nMcKinney\nPlano\nAllen"
+);
+$rexroad_vehicle_service_areas    = array_values( array_filter( array_map( 'trim', preg_split( '/[\r\n,]+/', $rexroad_vehicle_service_area_raw ) ?: array() ) ) );
+
 if ( null !== $rexroad_vehicle_make ) {
 	$rexroad_vehicle_models      = rexroad_vehicle_get_models( $rexroad_vehicle_make['slug'] );
 	$rexroad_vehicle_featured    = array_slice( $rexroad_vehicle_models, 0, 8 );
@@ -111,7 +121,7 @@ if ( null !== $rexroad_vehicle_make ) {
 								Rexroad Mobile Auto Repair services <?php echo esc_html( $rexroad_vehicle_make['name'] ); ?> vehicles across our Frisco-area service area &mdash; right at your home or workplace.
 							</p>
 							<p>
-								Actual service eligibility depends on your specific vehicle and the repair requested. Submit your year, model, and issue through Request Service and we&rsquo;ll confirm what we can do.
+								Service availability depends on your vehicle, its condition, and the repair needed. Submit your year, model, and issue through Request Service and we&rsquo;ll confirm what we can do.
 							</p>
 							<div class="rr-vehicles-intro__actions">
 								<a class="rr-button" href="<?php echo esc_url( $rexroad_schedule_url ); ?>">Request Service</a>
@@ -131,11 +141,11 @@ if ( null !== $rexroad_vehicle_make ) {
 						</div>
 					<?php endif; ?>
 
-					<!-- Featured models (deterministic catalog order, max 8) -->
+					<!-- Models we service (deterministic catalog order, max 8 shown here — no popularity ranking implied) -->
 					<section class="rr-content-section rr-vehicles-featured">
 						<div class="rr-section-heading">
-							<p class="rr-eyebrow">Featured</p>
-							<h2>Featured <?php echo esc_html( $rexroad_vehicle_make['name'] ); ?> Models</h2>
+							<p class="rr-eyebrow">Coverage</p>
+							<h2>Models We Service</h2>
 						</div>
 						<ul class="rr-vehicle-model-list">
 							<?php foreach ( $rexroad_vehicle_featured as $rexroad_vehicle_model ) : ?>
@@ -173,7 +183,35 @@ if ( null !== $rexroad_vehicle_make ) {
 						</ul>
 					</section>
 
-					<?php get_template_part( 'template-parts/vehicles/service-links' ); ?>
+					<?php
+					get_template_part(
+						'template-parts/vehicles/service-links',
+						null,
+						array( 'heading' => 'Common ' . $rexroad_vehicle_make['name'] . ' Services' )
+					);
+					get_template_part(
+						'template-parts/vehicles/problem-links',
+						null,
+						array( 'heading' => 'Common Issues We Diagnose on ' . $rexroad_vehicle_make['name'] . ' Vehicles' )
+					);
+					?>
+
+					<?php if ( ! empty( $rexroad_vehicle_service_areas ) ) : ?>
+						<!-- Service-area / mobile-service context (reuses existing footer configuration) -->
+						<section class="rr-content-section rr-vehicles-service-area">
+							<div class="rr-info-card">
+								<h3>Mobile Service, Wherever You Are</h3>
+								<p>
+									We come to your home or workplace to service your <?php echo esc_html( $rexroad_vehicle_make['name'] ); ?> &mdash; no shop visit required. We currently serve <?php echo esc_html( implode( ', ', $rexroad_vehicle_service_areas ) ); ?> and the surrounding area.
+								</p>
+							</div>
+						</section>
+					<?php endif; ?>
+
+					<!-- In-body upward navigation (breadcrumb already links here, but a visible in-content link improves scannability and internal linking beyond the breadcrumb alone). Reuses the hub URL already resolved above — no new query. -->
+					<p class="rr-vehicle-back-link">
+						<a href="<?php echo esc_url( $rexroad_vehicle_hub_url ); ?>">&larr; Browse All Vehicles</a>
+					</p>
 
 					<!-- Final CTA -->
 					<div class="rr-cta-panel">

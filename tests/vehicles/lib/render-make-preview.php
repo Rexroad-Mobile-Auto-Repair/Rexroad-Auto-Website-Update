@@ -25,8 +25,8 @@ require $root . '/rexroad-custom-theme/inc/vehicles/vehicles.php';
 require $root . '/rexroad-custom-theme/inc/schema-service.php';
 
 $GLOBALS['rexroad_test_pages'] = array(
-	1 => array( 'ID' => 1, 'post_name' => 'vehicles', 'post_parent' => 0, 'post_title' => 'Cars, Trucks & SUVs We Service', 'post_status' => 'publish' ),
-	2 => array( 'ID' => 2, 'post_name' => 'ford', 'post_parent' => 1, 'post_title' => 'Ford', 'post_status' => 'publish' ),
+	1 => array( 'ID' => 1, 'post_name' => 'vehicles', 'post_parent' => 0, 'post_title' => 'Cars, Trucks & SUVs We Service', 'post_status' => 'publish', 'template' => 'page-vehicles.php' ),
+	2 => array( 'ID' => 2, 'post_name' => 'ford', 'post_parent' => 1, 'post_title' => 'Ford', 'post_status' => 'publish', 'template' => 'page-vehicle-make.php' ),
 	3 => array( 'ID' => 3, 'post_name' => 'f-150', 'post_parent' => 2, 'post_title' => 'F-150', 'post_status' => 'publish' ),
 );
 $GLOBALS['rexroad_test_current_post_id']      = 2;

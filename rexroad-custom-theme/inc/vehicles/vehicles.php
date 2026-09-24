@@ -95,6 +95,34 @@ function rexroad_vehicle_get_models( string $make_slug ): array {
 }
 
 /**
+ * Other models for the same make, in deterministic catalog order,
+ * excluding one given slug (the model page currently being viewed).
+ * Not "popular" or "related by similarity" — purely the next entries
+ * in stable catalog order, capped to a small count for a compact
+ * "other models we service" section.
+ *
+ * @param string $make_slug          Make slug, e.g. "ford".
+ * @param string $exclude_model_slug Model slug to leave out (the current page).
+ * @param int    $limit              Maximum number of models to return.
+ * @return array<int, array{slug: string, name: string, years: array<int, array{0:int,1:int}>}>
+ */
+function rexroad_vehicle_get_other_models( string $make_slug, string $exclude_model_slug, int $limit = 6 ): array {
+	$others = array();
+
+	foreach ( rexroad_vehicle_get_models( $make_slug ) as $model ) {
+		if ( $model['slug'] === $exclude_model_slug ) {
+			continue;
+		}
+		$others[] = $model;
+		if ( count( $others ) >= $limit ) {
+			break;
+		}
+	}
+
+	return $others;
+}
+
+/**
  * A single model record by make slug + model slug.
  *
  * @param string $make_slug  Make slug, e.g. "ram".

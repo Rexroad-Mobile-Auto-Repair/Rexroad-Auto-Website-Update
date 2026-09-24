@@ -95,7 +95,7 @@ $rexroad_schedule_url  = (string) get_theme_mod( 'rexroad_schedule_url', home_ur
 							Rexroad Mobile Auto Repair services a wide range of supported U.S.-market cars, trucks, and SUVs across domestic, Asian, and European makes &mdash; right at your home or workplace.
 						</p>
 						<p>
-							Actual service eligibility depends on your specific vehicle and the repair requested. We do not service every trim, engine configuration, electric or plug-in hybrid vehicle, or repair type. Submit your year, make, model, and issue through Request Service and we&rsquo;ll confirm what we can do.
+							Service availability depends on your vehicle, its condition, and the repair needed. We do not service every trim, engine configuration, electric or plug-in hybrid vehicle, or repair type. Submit your year, make, model, and issue through Request Service and we&rsquo;ll confirm what we can do.
 						</p>
 						<div class="rr-vehicles-intro__actions">
 							<a class="rr-button" href="<?php echo esc_url( $rexroad_schedule_url ); ?>">Request Service</a>
@@ -190,7 +190,7 @@ $rexroad_schedule_url  = (string) get_theme_mod( 'rexroad_schedule_url', home_ur
 						<div class="rr-vehicle-search-results" id="vehicle-search-results">
 							<?php if ( empty( $rexroad_vehicle_search_results ) ) : ?>
 								<p>
-									No matches found in our catalog. That doesn&rsquo;t necessarily mean we can&rsquo;t help &mdash;
+									No matching vehicles found. That doesn&rsquo;t necessarily mean we can&rsquo;t help &mdash;
 									<a href="<?php echo esc_url( $rexroad_schedule_url ); ?>">request service</a> and we&rsquo;ll confirm.
 								</p>
 							<?php else : ?>
@@ -284,7 +284,7 @@ $rexroad_schedule_url  = (string) get_theme_mod( 'rexroad_schedule_url', home_ur
 					<div class="rr-info-card">
 						<h3>What This Directory Means</h3>
 						<p>
-							This directory shows the supported U.S.-market vehicle coverage in our catalog &mdash; the makes, models, and model years we generally work on. Being listed here does not guarantee that every repair, trim, or configuration for that vehicle is eligible for service.
+							This directory shows the U.S.-market makes, models, and model years we generally work on. Being listed here doesn&rsquo;t guarantee every repair, trim, or configuration is covered for that vehicle.
 						</p>
 						<p>
 							To confirm we can help with your specific vehicle and problem, submit your year, make, model, and issue through Request Service below.

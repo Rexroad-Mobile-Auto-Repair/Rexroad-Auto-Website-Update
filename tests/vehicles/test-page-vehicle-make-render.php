@@ -104,9 +104,12 @@ rexroad_test_check(
 $rexroad_ford_models = rexroad_vehicle_get_models( 'ford' );
 rexroad_test_check( 'Ford has more than 8 models in the catalog (so the 8-cap is meaningful)', count( $rexroad_ford_models ) > 8 );
 
-preg_match( '/Featured Ford Models.*?<ul class="rr-vehicle-model-list">(.*?)<\/ul>/s', $html, $featured_block );
+rexroad_test_check( 'renamed "Models We Service" heading present (no popularity claim implied)', false !== strpos( $html, '<h2>Models We Service</h2>' ) );
+rexroad_test_check( 'old popularity-implying heading ("Featured...") is gone', false === strpos( $html, 'Featured Ford Models' ) );
+
+preg_match( '/Models We Service.*?<ul class="rr-vehicle-model-list">(.*?)<\/ul>/s', $html, $featured_block );
 $featured_item_count = isset( $featured_block[1] ) ? substr_count( $featured_block[1], 'class="rr-vehicle-model"' ) : -1;
-rexroad_test_check( 'featured-models section shows at most 8 models', 8 === $featured_item_count );
+rexroad_test_check( '"Models We Service" section shows at most 8 models', 8 === $featured_item_count );
 
 rexroad_test_check(
 	'full model directory renders every Ford model exactly once',
@@ -131,8 +134,21 @@ rexroad_test_check(
 	1 === $GLOBALS['rexroad_test_get_pages_calls']
 );
 
-rexroad_test_check( 'service-links partial rendered (shared with /vehicles/)', false !== strpos( $html, 'Common Services for These Vehicles' ) );
+rexroad_test_check( 'service-links partial rendered with context-aware heading ("Common Ford Services")', false !== strpos( $html, '<h2>Common Ford Services</h2>' ) );
+rexroad_test_check( 'problem-links partial rendered with neutral, non-fabricated heading', false !== strpos( $html, '<h2>Common Issues We Diagnose on Ford Vehicles</h2>' ) );
+rexroad_test_check(
+	'problem section explicitly disclaims any "unusually prone" implication',
+	false !== strpos( $html, 'not a claim that this vehicle is unusually prone to any of them' )
+);
+rexroad_test_check( 'service-area section present, reusing existing footer service-area configuration', false !== strpos( $html, 'Frisco' ) && false !== strpos( $html, 'Mobile Service, Wherever You Are' ) );
 rexroad_test_check( 'CTA panel present', false !== strpos( $html, 'Request Service for Your Ford' ) );
+// Strip HTML comments (developer notes, never visible to a customer)
+// before checking customer-FACING wording specifically.
+$rexroad_html_visible_only = preg_replace( '/<!--.*?-->/s', '', $html );
+rexroad_test_check(
+	'customer-facing wording avoids database-sounding language ("catalog", "eligibility")',
+	false === stripos( $rexroad_html_visible_only, 'eligibility' ) && false === stripos( $rexroad_html_visible_only, 'catalog' )
+);
 
 rexroad_test_check( 'no internal "model:" storage-key prefix leaked into output', false === strpos( $html, 'model:' ) );
 rexroad_test_check( 'no source hash leaked into output', false === stripos( $html, 'source_hash' ) && false === stripos( $html, 'sha256' ) );
@@ -211,6 +227,33 @@ rexroad_test_check(
 	'every Nissan model renders as plain text, none linked, with zero published children',
 	0 === substr_count( $html_nissan, '<a class="rr-vehicle-model__name"' )
 	&& $rexroad_nissan_expected_spans === substr_count( $html_nissan, '<span class="rr-vehicle-model__name">' )
+);
+
+// --- In-body upward navigation (HARDEN fix) ----------------------------
+
+rexroad_test_check(
+	'make page renders an in-body "Browse All Vehicles" link to the real hub permalink',
+	1 === substr_count( $html, '<a href="https://example.test/vehicles/">&larr; Browse All Vehicles</a>' )
+);
+rexroad_test_check(
+	'invalid-slug fallback page does NOT render the in-body upward vehicle-navigation link',
+	false === strpos( $html_invalid, 'Browse All Vehicles' )
+);
+rexroad_test_check(
+	'wrong-parent fallback page does NOT render the in-body upward vehicle-navigation link',
+	false === strpos( $html_wrong_parent, 'Browse All Vehicles' )
+);
+
+// --- Editorial checklist contains the explicit non-publishable rule ---
+
+$rexroad_checklist = (string) file_get_contents( $root . '/rexroad-custom-theme/inc/vehicles/EDITORIAL-CHECKLIST.md' );
+rexroad_test_check(
+	'EDITORIAL-CHECKLIST.md states the boilerplate-only page is not publishable',
+	false !== stripos( $rexroad_checklist, 'is not publishable' )
+);
+rexroad_test_check(
+	'EDITORIAL-CHECKLIST.md states an explicit ~150-word minimum for both page types',
+	2 === substr_count( $rexroad_checklist, '150 words' )
 );
 
 if ( $failures > 0 ) {

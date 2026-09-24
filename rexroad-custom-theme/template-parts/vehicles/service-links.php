@@ -2,10 +2,17 @@
 /**
  * Compact "related services" links block.
  *
- * Reused on /vehicles/ and Vehicle Make Page templates. Self-contained
- * (defines its own label map) and cross-checks every slug against the
- * canonical service registry (inc/schema-service.php) so a future
- * rename there can't silently produce a dead link here.
+ * Reused on /vehicles/, Vehicle Make Page, and Vehicle Model Page
+ * templates. Self-contained (defines its own label map) and cross-
+ * checks every slug against the canonical service registry
+ * (inc/schema-service.php) so a future rename there can't silently
+ * produce a dead link here.
+ *
+ * Optional $args (WP 5.5+ get_template_part third argument):
+ *   'heading' => context-aware section heading, e.g. "Common Ford
+ *                Services" or "Common Ford F-150 Services". Falls
+ *                back to a generic heading when not supplied (as on
+ *                the /vehicles/ hub, which covers all makes/models).
  *
  * @package Rexroad_Custom
  */
@@ -26,11 +33,16 @@ $rexroad_vehicle_service_links = array(
 $rexroad_vehicle_known_service_slugs = function_exists( 'rexroad_custom_get_service_slugs' )
 	? rexroad_custom_get_service_slugs()
 	: array();
+
+$rexroad_vehicle_services_heading = ( isset( $args['heading'] ) && '' !== $args['heading'] )
+	? (string) $args['heading']
+	: 'Common Services for These Vehicles';
 ?>
 <section class="rr-content-section rr-vehicles-services">
 	<div class="rr-section-heading">
 		<p class="rr-eyebrow">Related Services</p>
-		<h2>Common Services for These Vehicles</h2>
+		<h2><?php echo esc_html( $rexroad_vehicle_services_heading ); ?></h2>
+		<p>Service availability depends on your vehicle, its condition, and the repair needed.</p>
 	</div>
 	<ul class="rr-vehicle-service-links">
 		<?php foreach ( $rexroad_vehicle_service_links as $rexroad_vehicle_service_slug => $rexroad_vehicle_service_label ) : ?>

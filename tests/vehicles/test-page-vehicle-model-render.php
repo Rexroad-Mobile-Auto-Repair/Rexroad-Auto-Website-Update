@@ -45,6 +45,7 @@ function rexroad_render_vehicle_model_page( int $post_id ): string {
 
 	$GLOBALS['rexroad_test_current_post_id']      = $post_id;
 	$GLOBALS['rexroad_test_have_posts_remaining'] = 1;
+	$GLOBALS['rexroad_test_get_pages_calls']      = 0;
 
 	ob_start();
 	require $root . '/rexroad-custom-theme/page-vehicle-model.php';
@@ -68,6 +69,12 @@ $GLOBALS['rexroad_test_pages'] = array(
 	14 => array( 'ID' => 14, 'post_name' => 'some-model-2', 'post_parent' => 5, 'post_title' => 'Some Model 2', 'post_status' => 'publish' ), // parent attached to hub but not a real catalog make
 	15 => array( 'ID' => 15, 'post_name' => 'not-a-real-model', 'post_parent' => 2, 'post_title' => 'Not A Real Model', 'post_status' => 'publish' ), // valid make, invalid model slug
 	16 => array( 'ID' => 16, 'post_name' => 'f-150', 'post_parent' => 9, 'post_title' => 'F-150 Under Chevy', 'post_status' => 'publish' ), // valid model slug, WRONG make
+	// A published "Bronco" sibling under Ford (catalog order: Bronco is
+	// the very first Ford model) — proves the "Other Ford Models We
+	// Service" section links a real published sibling and, since it's
+	// the closest excluded-current-model neighbor, appears within the
+	// max-6 window.
+	17 => array( 'ID' => 17, 'post_name' => 'bronco', 'post_parent' => 2, 'post_title' => 'Bronco', 'post_status' => 'publish' ),
 );
 
 // --- Valid: Ford F-150 --------------------------------------------------
@@ -92,9 +99,35 @@ rexroad_test_check(
 	false !== strpos( $html, $rexroad_f150_years )
 );
 
-rexroad_test_check( 'service-links partial reused (shared with hub + make page)', false !== strpos( $html, 'Common Services for These Vehicles' ) );
+rexroad_test_check( 'context-aware "Supported Model Years" section present', false !== strpos( $html, '<h3>Supported Model Years</h3>' ) );
+rexroad_test_check( 'service-links partial reused with context-aware heading ("Common Ford F-150 Services")', false !== strpos( $html, '<h2>Common Ford F-150 Services</h2>' ) );
+rexroad_test_check( 'problem-links partial reused with model-specific, non-fabricated heading', false !== strpos( $html, '<h2>Problems We Diagnose on Ford F-150 Vehicles</h2>' ) );
+rexroad_test_check( '"What We Can Diagnose and Repair at Your Location" capability section present', false !== strpos( $html, 'What We Can Diagnose and Repair at Your Location' ) );
+
+rexroad_test_check(
+	'"Other Ford Models We Service" section present, capped at 6, current model (F-150) excluded',
+	1 === preg_match( '/Other Ford Models We Service.*?<ul class="rr-vehicle-model-list">(.*?)<\/ul>/s', $html, $rexroad_related_block )
+	&& 6 === substr_count( $rexroad_related_block[1] ?? '', 'class="rr-vehicle-model"' )
+	&& false === strpos( $rexroad_related_block[1] ?? '', '>F-150<' )
+);
+rexroad_test_check(
+	'published sibling "Bronco" links in the related-models section; unpublished siblings stay plain text',
+	false !== strpos( $html, '<a class="rr-vehicle-model__name" href="https://example.test/vehicles/ford/bronco/">Bronco</a>' )
+);
+rexroad_test_check(
+	'related-models resolution uses exactly one get_pages() lookup (no N+1)',
+	1 === $GLOBALS['rexroad_test_get_pages_calls']
+);
+
+rexroad_test_check( 'service-area section present, reusing existing footer configuration', false !== strpos( $html, 'Mobile Service, Wherever You Are' ) && false !== strpos( $html, 'Frisco' ) );
 rexroad_test_check( 'CTA panel present', false !== strpos( $html, 'Request Service for Your Ford F-150' ) );
 rexroad_test_check( 'no internal "model:" storage-key prefix leaked into output', false === strpos( $html, 'model:' ) );
+
+$rexroad_html_visible_only = preg_replace( '/<!--.*?-->/s', '', $html );
+rexroad_test_check(
+	'customer-facing wording avoids database-sounding language ("catalog", "eligibility")',
+	false === stripos( $rexroad_html_visible_only, 'eligibility' ) && false === stripos( $rexroad_html_visible_only, 'catalog' )
+);
 
 // --- C/K 2500 (WordPress-native slug) as a real model page --------------
 
@@ -102,6 +135,17 @@ $html_ck = rexroad_render_vehicle_model_page( 10 );
 rexroad_test_check(
 	'Chevrolet "C/K 2500" (WP-native slug "ck-2500") renders its own model page correctly',
 	false !== strpos( $html_ck, '<h1>Chevrolet C/K 2500 Mobile Mechanic Service</h1>' )
+);
+
+// --- In-body upward navigation (HARDEN fix) ----------------------------
+
+rexroad_test_check(
+	'model page renders an in-body "View All Ford Models" link to the real make permalink (catalog name used, not WP title)',
+	1 === substr_count( $html, '<a href="https://example.test/vehicles/ford/">&larr; View All Ford Models</a>' )
+);
+rexroad_test_check(
+	'model page also renders an in-body "Browse All Vehicles" link to the real hub permalink',
+	1 === substr_count( $html, '<a href="https://example.test/vehicles/">Browse All Vehicles</a>' )
 );
 
 // --- Hierarchy failure modes: all must fall back gracefully -------------
@@ -121,6 +165,10 @@ foreach ( $cases as $id => $label ) {
 	rexroad_test_check( "fallback has exactly one H1: {$label}", 1 === substr_count( $html_case, '<h1' ) );
 	rexroad_test_check( "fallback does not fabricate a 'Mobile Mechanic Service' H1: {$label}", false === strpos( $html_case, 'Mobile Mechanic Service</h1>' ) );
 	rexroad_test_check( "fallback still offers Request Service: {$label}", false !== strpos( $html_case, 'Request Service' ) );
+	rexroad_test_check(
+		"fallback does NOT render misleading in-body upward vehicle navigation: {$label}",
+		false === strpos( $html_case, 'View All' ) && false === strpos( $html_case, 'Browse All Vehicles' )
+	);
 }
 
 if ( $failures > 0 ) {
