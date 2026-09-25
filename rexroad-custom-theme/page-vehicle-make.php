@@ -149,7 +149,7 @@ if ( null !== $rexroad_vehicle_make ) {
 						</div>
 						<ul class="rr-vehicle-model-list">
 							<?php foreach ( $rexroad_vehicle_featured as $rexroad_vehicle_model ) : ?>
-								<?php $rexroad_vehicle_model_url = $rexroad_vehicle_child_pages[ $rexroad_vehicle_model['slug'] ] ?? null; ?>
+								<?php $rexroad_vehicle_model_url = $rexroad_vehicle_child_pages[ rexroad_vehicle_page_slug_for_model( $rexroad_vehicle_make['slug'], $rexroad_vehicle_model['slug'] ) ] ?? null; ?>
 								<li class="rr-vehicle-model">
 									<?php if ( null !== $rexroad_vehicle_model_url ) : ?>
 										<a class="rr-vehicle-model__name" href="<?php echo esc_url( $rexroad_vehicle_model_url ); ?>"><?php echo esc_html( $rexroad_vehicle_model['name'] ); ?></a>
@@ -170,7 +170,7 @@ if ( null !== $rexroad_vehicle_make ) {
 						</div>
 						<ul class="rr-vehicle-model-list">
 							<?php foreach ( $rexroad_vehicle_models as $rexroad_vehicle_model ) : ?>
-								<?php $rexroad_vehicle_model_url = $rexroad_vehicle_child_pages[ $rexroad_vehicle_model['slug'] ] ?? null; ?>
+								<?php $rexroad_vehicle_model_url = $rexroad_vehicle_child_pages[ rexroad_vehicle_page_slug_for_model( $rexroad_vehicle_make['slug'], $rexroad_vehicle_model['slug'] ) ] ?? null; ?>
 								<li class="rr-vehicle-model">
 									<?php if ( null !== $rexroad_vehicle_model_url ) : ?>
 										<a class="rr-vehicle-model__name" href="<?php echo esc_url( $rexroad_vehicle_model_url ); ?>"><?php echo esc_html( $rexroad_vehicle_model['name'] ); ?></a>

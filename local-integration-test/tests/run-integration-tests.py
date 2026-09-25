@@ -36,10 +36,6 @@ def check(label, condition):
     print(("PASS" if condition else "FAIL") + ": " + label)
 
 
-def note_defect(label):
-    print("DEFECT (documented, not counted as a suite failure): " + label)
-
-
 def extract_jsonld(html):
     blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
     parsed = []
@@ -167,35 +163,36 @@ check(
 )
 check_model_page("honda", "civic", "Honda", "Civic", "Mobile Service for Your Civic")
 
-# --- Ram / 1500 (Batch 1) ---
+# --- Ram / 1500 (Batch 1) — FIXED: numeric-model-slug convention ---
+# Ram's "1500" model is purely numeric. WordPress does not reliably
+# allow a purely-numeric hierarchical Page slug (wp_unique_post_slug()
+# mutates it, and a numeric final URL segment collides with
+# WordPress's own built-in page-pagination rewrite rule). The seed and
+# the theme's rexroad_vehicle_page_slug_for_model() helper both use the
+# "{make-slug}-{model-slug}" convention for this case, so the real,
+# stable, canonical URL is /vehicles/ram/ram-1500/ — never
+# /vehicles/ram/1500/ and never WordPress's own "-2" fallback.
 ram_html = check_make_page("ram", "Ram", "lineup is more focused than most makes")
 check(
-    "/vehicles/ram/ 1500 is a link (published child page)",
-    '<a class="rr-vehicle-model__name" href="http://localhost:8089/vehicles/ram/1500/">1500</a>' in ram_html,
+    "/vehicles/ram/ 1500 is a link to the ram-1500 convention URL (published child page)",
+    '<a class="rr-vehicle-model__name" href="http://localhost:8089/vehicles/ram/ram-1500/">1500</a>' in ram_html,
 )
-# KNOWN DEFECT (see report): WordPress's own core catch-all page rewrite
-# rule "(.?.+?)(?:/([0-9]+))?/?$" treats a purely-numeric final URL
-# segment as a <!--nextpage--> pagination number for the PARENT page,
-# not as its own pagename. /vehicles/ram/1500/ therefore resolves to
-# pagename=vehicles/ram, page=1500, and WordPress's own
-# redirect_canonical() 301s it to /vehicles/ram/. This is core
-# WordPress behavior (no custom rewrite rule involved) and affects any
-# hierarchical Page whose slug is purely numeric. This assertion
-# intentionally checks for the SPEC-CORRECT behavior (HTTP 200 on the
-# model page itself) so the suite fails loudly instead of silently
-# tolerating the redirect.
-code, ram1500_html, headers = fetch("/vehicles/ram/1500/", follow_redirects=False)
-ram1500_correct = code == 200 and "<h1>Ram 1500 Mobile Mechanic Service</h1>" in ram1500_html
-check("/vehicles/ram/1500/ returns HTTP 200 with its own content (spec-correct)", ram1500_correct)
-if not ram1500_correct:
-    note_defect(
-        f"/vehicles/ram/1500/ returned HTTP {code}"
-        + (f", Location: {headers.get('Location')}" if "Location" in headers else "")
-        + " — WordPress core's numeric-pagename rewrite rule redirects this URL to /vehicles/ram/ instead of resolving the model page. "
-        "Affects any catalog model with a purely-numeric slug (Ram 1500/2500/3500, Chrysler 200/300, Mazda 626, Toyota 86 — 7 total in the current catalog). "
-        "NOT caused by a custom rewrite rule in this theme (none exist) — this is WordPress's own built-in page-pagination rewrite rule. "
-        "No production code was changed to work around this; see the integration-test report for the full explanation and options."
-    )
+check_model_page("ram", "ram-1500", "Ram", "1500", "Mobile Service for Your Ram 1500")
+
+code, _, headers_check = fetch("/vehicles/ram/ram-1500/", follow_redirects=False)
+check("/vehicles/ram/ram-1500/ resolves directly, HTTP 200, no redirect", code == 200)
+
+# The raw numeric URL is explicitly NOT the canonical model URL. WordPress's
+# own catch-all page-pagination rewrite rule ("(.?.+?)(?:/([0-9]+))?/?$")
+# still redirects it to the parent make page — this is core WordPress
+# behavior, not something this fix fights with a redirect or rewrite rule;
+# the fix simply never relies on that URL being the model's canonical
+# address in the first place.
+code, _, headers_raw = fetch("/vehicles/ram/1500/", follow_redirects=False)
+check(
+    "/vehicles/ram/1500/ is NOT the canonical model URL (WordPress's own pagination rule still redirects it — expected, not fought)",
+    code == 301 and headers_raw.get("Location", "").endswith("/vehicles/ram/"),
+)
 
 # --- Published/unpublished + invalid-hierarchy edge cases (must still hold) ---
 code, html, headers = fetch("/vehicles/ford/not-a-real-model/")

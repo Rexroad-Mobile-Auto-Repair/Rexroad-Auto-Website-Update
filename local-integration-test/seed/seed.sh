@@ -59,6 +59,23 @@ mkdir -p "$SCRIPT_DIR/../artifacts"
 : > "$IDS_FILE"
 echo "VEHICLES_ID=$VEHICLES_ID" >> "$IDS_FILE"
 
+# Shell mirror of rexroad_vehicle_page_slug_for_model() in
+# inc/vehicles/vehicles.php — WordPress does not reliably allow a
+# purely-numeric hierarchical Page slug, so a catalog model whose slug
+# is digits only (e.g. Ram "1500") gets the WordPress Page slug
+# "{make-slug}-{model-slug}" instead. The catalog model itself is
+# never renamed; only the seeded WordPress Page's slug differs. Used at
+# every model-page seed call, exactly like the PHP helper is used at
+# every make/model page-slug comparison.
+wp_model_page_slug() {
+  make_slug="$1"
+  model_slug="$2"
+  case "$model_slug" in
+    ''|*[!0-9]*) echo "$model_slug" ;;
+    *) echo "${make_slug}-${model_slug}" ;;
+  esac
+}
+
 # Reads editorial the_content() straight from the approved, already-
 # committed drafts under editorial-workspace/vehicles/ — never
 # duplicated into this script or into PHP.
@@ -84,10 +101,11 @@ create_model_page() {
   content_file="$4"
   parent_id="$5"
   content=$(cat "$EDITORIAL_DIR/vehicles/$make_slug/$content_file")
+  page_slug=$(wp_model_page_slug "$make_slug" "$model_slug")
   $CLI post create \
     --post_type=page \
     --post_title="$model_title" \
-    --post_name="$model_slug" \
+    --post_name="$page_slug" \
     --post_status=publish \
     --post_parent="$parent_id" \
     --page_template=page-vehicle-model.php \

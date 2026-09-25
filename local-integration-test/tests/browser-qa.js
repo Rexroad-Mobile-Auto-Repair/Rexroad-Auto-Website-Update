@@ -13,6 +13,7 @@ const pages = [
   { path: '/vehicles/honda/', name: 'honda' },
   { path: '/vehicles/honda/civic/', name: 'civic' },
   { path: '/vehicles/ram/', name: 'ram' },
+  { path: '/vehicles/ram/ram-1500/', name: 'ram1500' },
   // /vehicles/ram/1500/ intentionally excluded: known defect (see report),
   // WordPress 301-redirects it to /vehicles/ram/ before any page renders.
 ];
