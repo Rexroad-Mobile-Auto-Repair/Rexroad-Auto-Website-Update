@@ -296,6 +296,36 @@ function rexroad_vehicle_get_published_child_page_map( int $parent_id ): array {
 }
 
 /**
+ * Deterministic WordPress Page slug for a catalog model, given its make.
+ *
+ * WordPress does not reliably allow a purely-numeric hierarchical Page
+ * slug: wp_unique_post_slug() silently mutates it (e.g. "1500" becomes
+ * "1500-2" on creation), and even where the raw slug is stored, a
+ * trailing all-digit URL segment collides with WordPress's own built-in
+ * page-pagination rewrite rule ("(.?.+?)(?:/([0-9]+))?/?$"), which
+ * treats it as a <!--nextpage--> page number for the PARENT page rather
+ * than a pagename of its own.
+ *
+ * For the small set of real catalog models whose name is digits only
+ * (e.g. Ram "1500", Chrysler "300", Toyota "86"), and ONLY those, the
+ * WordPress Page slug is "{make-slug}-{model-slug}" instead of the bare
+ * model slug. Every other model's WordPress Page slug is unchanged.
+ *
+ * This never changes the catalog model's own identity (vehicle-data.php
+ * keeps the model slug "1500") — it only defines what an editor types
+ * into a WordPress Page's slug field, and what this theme expects to
+ * find there. Every place that compares or expects a model's WordPress
+ * Page slug must go through this function so the convention can't drift.
+ *
+ * @param string $make_slug  Catalog make slug, e.g. "ram".
+ * @param string $model_slug Catalog model slug, e.g. "1500".
+ * @return string WordPress Page slug for this model, e.g. "ram-1500".
+ */
+function rexroad_vehicle_page_slug_for_model( string $make_slug, string $model_slug ): string {
+	return ctype_digit( $model_slug ) ? $make_slug . '-' . $model_slug : $model_slug;
+}
+
+/**
  * Resolve the validated catalog make for a GIVEN post, or null.
  *
  * A make only resolves when BOTH are true:
@@ -348,7 +378,9 @@ function rexroad_vehicle_resolve_make_from_current_page(): ?array {
  *    (rexroad_vehicle_resolve_make_from_page() — which itself requires
  *    THAT page's parent to be the real Vehicles hub), AND
  *  - the current post's own slug matches a model under that specific
- *    resolved make.
+ *    resolved make, once each candidate model's slug is passed through
+ *    rexroad_vehicle_page_slug_for_model() — never the raw catalog
+ *    slug, and never WordPress's own "-2"-suffixed fallback.
  *
  * A model slug that exists under a DIFFERENT make, or a make page that
  * isn't itself validly hung off the Vehicles hub, or no parent at all,
@@ -371,14 +403,14 @@ function rexroad_vehicle_resolve_model_from_current_page(): ?array {
 		return null;
 	}
 
-	$model = rexroad_vehicle_get_model( $make['slug'], $post->post_name );
-
-	if ( null === $model ) {
-		return null;
+	foreach ( rexroad_vehicle_get_models( $make['slug'] ) as $model ) {
+		if ( rexroad_vehicle_page_slug_for_model( $make['slug'], $model['slug'] ) === $post->post_name ) {
+			return array(
+				'make'  => $make,
+				'model' => $model,
+			);
+		}
 	}
 
-	return array(
-		'make'  => $make,
-		'model' => $model,
-	);
+	return null;
 }
