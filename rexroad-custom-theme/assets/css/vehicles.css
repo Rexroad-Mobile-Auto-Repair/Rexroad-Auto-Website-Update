@@ -1,0 +1,361 @@
+/*
+ * /vehicles/ directory and Vehicle Make Page templates.
+ *
+ * Reuses existing tokens/components from base.css and content.css
+ * (--rr-color-*, .rr-container, .rr-button, .rr-page-intro,
+ * .rr-content-section, .rr-section-heading, .rr-eyebrow, .rr-info-card,
+ * .rr-cta-panel, .rr-check-list, .rr-vehicle-model-list). Only
+ * page-specific components live here: featured make cards, the search
+ * box, the A-Z nav, the grouped full directory, and the breadcrumb.
+ */
+
+/* Anchor targets land below the sticky site header. */
+.rr-vehicles-directory [id^='make-'] {
+    scroll-margin-top: 140px;
+}
+
+/* Breadcrumb (Vehicles hub + Vehicle Make Page) */
+.rr-vehicle-breadcrumb {
+    margin: 1.5rem 0 0;
+}
+
+.rr-vehicle-breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.rr-vehicle-breadcrumb li:not(:last-child)::after {
+    margin: 0 0.5rem;
+    color: #d1d5db;
+    content: '/';
+}
+
+.rr-vehicle-breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.rr-vehicle-breadcrumb a:hover,
+.rr-vehicle-breadcrumb a:focus-visible {
+    color: var(--rr-color-accent);
+    text-decoration: underline;
+}
+
+.rr-vehicle-breadcrumb li[aria-current] {
+    color: var(--rr-color-dark);
+    font-weight: 650;
+}
+
+/* 1. Hero / introduction */
+.rr-vehicles-intro__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 1.5rem;
+}
+
+/* 2. Featured makes */
+.rr-vehicle-make-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.rr-vehicle-make-card {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    padding: 1.5rem;
+    overflow: hidden;
+    flex-direction: column;
+    color: #e5e7eb;
+    background:
+        radial-gradient(circle at 88% 14%, rgba(198, 40, 40, 0.32), transparent 38%),
+        linear-gradient(145deg, #111827, #1f2937);
+    border: 1px solid #2b3648;
+    border-radius: 18px;
+    box-shadow: 0 14px 36px rgba(15, 23, 42, 0.18);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.rr-vehicle-make-card:hover,
+.rr-vehicle-make-card:focus-within {
+    box-shadow: 0 20px 48px rgba(15, 23, 42, 0.26);
+    transform: translateY(-4px);
+}
+
+.rr-vehicle-make-card h3 {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 0.65rem;
+    color: #ffffff;
+    font-size: 1.2rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.rr-vehicle-make-card__models {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 1.1rem;
+    color: #d1d5db;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.rr-vehicle-make-card__link {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    margin-top: auto;
+    color: #fca5a5;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.rr-vehicle-make-card__link:hover,
+.rr-vehicle-make-card__link:focus-visible {
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+}
+
+/* 3. Vehicle search */
+.rr-vehicle-search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    max-width: 640px;
+}
+
+.rr-vehicle-search-form input[type='search'] {
+    flex: 1 1 320px;
+    min-height: 50px;
+    padding: 0.75rem 1rem;
+    background: #ffffff;
+    color: var(--rr-color-text);
+    border: 1px solid #b8c0cc;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
+    font: inherit;
+    font-size: 16px;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.rr-vehicle-search-form input[type='search']:focus {
+    border-color: var(--rr-color-accent);
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.14);
+}
+
+.rr-vehicle-search-status {
+    margin-top: 0.85rem;
+    color: #4b5563;
+    font-size: 0.92rem;
+}
+
+.rr-vehicle-search-results {
+    margin-top: 1rem;
+}
+
+/* 4. A-Z make navigation */
+.rr-vehicle-az-nav {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.rr-vehicle-az-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.rr-vehicle-az-nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    color: var(--rr-color-dark);
+    background: var(--rr-color-muted);
+    border-radius: 50%;
+    font-weight: 800;
+    text-decoration: none;
+    transition: background-color 160ms ease, color 160ms ease;
+}
+
+.rr-vehicle-az-nav a:hover,
+.rr-vehicle-az-nav a:focus-visible {
+    color: #ffffff;
+    background: var(--rr-color-accent);
+    outline: 0;
+}
+
+/* 5. Full vehicle directory */
+.rr-vehicle-group + .rr-vehicle-group {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.rr-vehicle-group__title {
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.6rem;
+    color: var(--rr-color-dark);
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--rr-color-border);
+}
+
+.rr-vehicle-make-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.rr-vehicle-make {
+    min-width: 0;
+    padding: 1.5rem;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+}
+
+.rr-vehicle-make__title {
+    margin: 0 0 0.9rem;
+    color: var(--rr-color-dark);
+    font-size: 1.1rem;
+}
+
+.rr-vehicle-make__count {
+    color: #6b7280;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.rr-vehicle-model-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.rr-vehicle-model {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid #f1f3f5;
+    font-size: 0.92rem;
+}
+
+.rr-vehicle-model:last-child {
+    border-bottom: 0;
+}
+
+/*
+ * The vehicles.js live filter toggles the native `hidden` attribute on
+ * .rr-vehicle-model / .rr-vehicle-make / .rr-vehicle-group. Author
+ * `display` rules above (needed for layout) have the same specificity
+ * as the browser's default `[hidden] { display: none }` UA rule and
+ * are declared later in the cascade, so without this they would win
+ * and silently defeat the JS filter. Force the attribute to always
+ * hide the element regardless of any other display rule.
+ */
+.rr-vehicle-model[hidden],
+.rr-vehicle-make[hidden],
+.rr-vehicle-group[hidden] {
+    display: none !important;
+}
+
+.rr-vehicle-model__name {
+    color: var(--rr-color-text);
+    font-weight: 650;
+}
+
+.rr-vehicle-model__years {
+    flex: 0 0 auto;
+    color: #6b7280;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+/* 7. Service links */
+.rr-vehicle-service-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.rr-vehicle-service-links a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.1rem;
+    color: var(--rr-color-dark);
+    background: var(--rr-color-muted);
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 160ms ease, color 160ms ease;
+}
+
+.rr-vehicle-service-links a:hover,
+.rr-vehicle-service-links a:focus-visible {
+    color: #ffffff;
+    background: var(--rr-color-accent);
+    outline: 0;
+}
+
+@media (max-width: 1020px) {
+    .rr-vehicle-make-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .rr-vehicle-make-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .rr-vehicle-make-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rr-vehicle-search-form {
+        flex-direction: column;
+    }
+
+    /*
+     * The 320px flex-basis on the input (set above for row layout,
+     * where it targets width) would otherwise apply to height once the
+     * axis flips to column here — reset it to content-driven sizing.
+     */
+    .rr-vehicle-search-form input[type='search'] {
+        flex-basis: auto;
+    }
+
+    .rr-vehicle-search-form button {
+        width: 100%;
+    }
+
+    .rr-vehicle-model {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.15rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rr-vehicle-make-card {
+        transition: none;
+    }
+}

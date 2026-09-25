@@ -67,6 +67,24 @@ rexroad_test_check(
 
 rexroad_test_check( 'get_model() returns null for unknown model', null === rexroad_vehicle_get_model( 'ford', 'not-a-real-model' ) );
 
+// WordPress-slug-compatibility fix: model lookup by the new,
+// WP-native "/" -> stripped (not hyphenated) slugs must work.
+$ck_2500 = rexroad_vehicle_get_model( 'chevrolet', 'ck-2500' );
+$ck_3500 = rexroad_vehicle_get_model( 'chevrolet', 'ck-3500' );
+rexroad_test_check(
+	'get_model("chevrolet","ck-2500") resolves to "C/K 2500" (WordPress-native slug)',
+	null !== $ck_2500 && 'C/K 2500' === $ck_2500['name']
+);
+rexroad_test_check(
+	'get_model("chevrolet","ck-3500") resolves to "C/K 3500" (WordPress-native slug)',
+	null !== $ck_3500 && 'C/K 3500' === $ck_3500['name']
+);
+rexroad_test_check(
+	'the old "c-k-2500" / "c-k-3500" slugs no longer resolve',
+	null === rexroad_vehicle_get_model( 'chevrolet', 'c-k-2500' )
+	&& null === rexroad_vehicle_get_model( 'chevrolet', 'c-k-3500' )
+);
+
 rexroad_test_check(
 	'normalize_search_term collapses "F-150" and "F150" to the same value',
 	rexroad_vehicle_normalize_search_term( 'F-150' ) === rexroad_vehicle_normalize_search_term( 'F150' )

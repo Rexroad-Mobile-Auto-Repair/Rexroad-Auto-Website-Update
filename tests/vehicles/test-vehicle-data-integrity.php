@@ -81,6 +81,42 @@ rexroad_test_check(
 	&& '1500' === $data['makes']['ram']['models']['model:1500']['slug']
 );
 
+// WordPress-slug-compatibility fix: "/" is stripped, not hyphenated —
+// "C/K 2500"/"C/K 3500" must slug to "ck-2500"/"ck-3500", matching
+// WordPress's own sanitize_title_with_dashes() output exactly.
+rexroad_test_check(
+	'chevrolet "C/K 2500" now slugs to WordPress-compatible "ck-2500", display name and years unchanged',
+	'C/K 2500' === ( $data['makes']['chevrolet']['models']['model:ck-2500']['name'] ?? null )
+	&& 'ck-2500' === ( $data['makes']['chevrolet']['models']['model:ck-2500']['slug'] ?? null )
+	&& array( array( 2000, 2000 ) ) === ( $data['makes']['chevrolet']['models']['model:ck-2500']['years'] ?? null )
+);
+rexroad_test_check(
+	'chevrolet "C/K 3500" now slugs to WordPress-compatible "ck-3500", display name and years unchanged',
+	'C/K 3500' === ( $data['makes']['chevrolet']['models']['model:ck-3500']['name'] ?? null )
+	&& 'ck-3500' === ( $data['makes']['chevrolet']['models']['model:ck-3500']['slug'] ?? null )
+	&& array( array( 2000, 2000 ) ) === ( $data['makes']['chevrolet']['models']['model:ck-3500']['years'] ?? null )
+);
+rexroad_test_check(
+	'the old "c-k-2500" / "c-k-3500" slugs no longer exist',
+	! isset( $data['makes']['chevrolet']['models']['model:c-k-2500'] )
+	&& ! isset( $data['makes']['chevrolet']['models']['model:c-k-3500'] )
+);
+
+// Catalog-wide slug-collision scan (not just per-make): every
+// make+model slug pair must be unique across the whole generated file.
+$rexroad_all_pairs     = array();
+$rexroad_collisions    = array();
+foreach ( $data['makes'] as $make_slug => $make_row ) {
+	foreach ( $make_row['models'] as $model_row ) {
+		$pair = $make_slug . '/' . $model_row['slug'];
+		if ( isset( $rexroad_all_pairs[ $pair ] ) ) {
+			$rexroad_collisions[] = $pair;
+		}
+		$rexroad_all_pairs[ $pair ] = true;
+	}
+}
+rexroad_test_check( 'no make+model slug-pair collisions anywhere in the regenerated catalog', 0 === count( $rexroad_collisions ) );
+
 if ( $failures > 0 ) {
 	fwrite( STDERR, "\n{$failures} integrity test(s) failed.\n" );
 	exit( 1 );

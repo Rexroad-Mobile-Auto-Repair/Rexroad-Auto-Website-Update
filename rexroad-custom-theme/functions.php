@@ -20,6 +20,7 @@ $rexroad_custom_includes = array(
 	'/inc/schema-about.php',
 	'/inc/schema-contact.php',
 	'/inc/schema-service.php',
+	'/inc/schema-vehicles.php',
 	'/inc/schema-breadcrumb.php',
 	'/inc/schema-blog.php',
 	'/inc/analytics.php',
