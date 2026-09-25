@@ -1,0 +1,79 @@
+# Disposable, local-only WordPress integration test environment for the
+# Rexroad vehicle SEO system. Every credential here is a throwaway local
+# value with no relationship to any real Rexroad system. This stack has
+# no configured route to rexroadauto.com or staging.rexroadauto.com —
+# it only talks to itself over the Docker bridge network and exposes a
+# single port on 127.0.0.1 for local browser/HTTP testing.
+#
+# Start:   docker compose up -d
+# Seed:    ./seed/seed.sh
+# Destroy: docker compose down -v   (drops the DB volume too — fully disposable)
+
+services:
+  db:
+    image: mariadb:11.4
+    restart: "no"
+    environment:
+      MARIADB_ROOT_PASSWORD: local_only_root_pw
+      MARIADB_DATABASE: rexroad_vehicle_test
+      MARIADB_USER: rexroad_test
+      MARIADB_PASSWORD: local_only_test_pw
+    volumes:
+      - rexroad_vehicle_test_db:/var/lib/mysql
+    networks:
+      - rexroad_vehicle_test_net
+
+  wordpress:
+    image: wordpress:6.6-php8.3-apache
+    restart: "no"
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: rexroad_vehicle_test
+      WORDPRESS_DB_USER: rexroad_test
+      WORDPRESS_DB_PASSWORD: local_only_test_pw
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_DEBUG_LOG', true);
+        define('WP_DEBUG_DISPLAY', false);
+        define('DISALLOW_FILE_MODS', true);
+    ports:
+      # Bind to loopback only — never reachable from outside this machine.
+      - "127.0.0.1:8089:80"
+    volumes:
+      # Shared WP core files/wp-config.php with the wpcli container, so
+      # wp-cli operates on the SAME site the browser hits, not a copy.
+      - wp_html:/var/www/html
+      # Real theme code, mounted read-only: the test proves the actual
+      # production theme works in real WordPress, never a copy of it.
+      - ../rexroad-custom-theme:/var/www/html/wp-content/themes/rexroad-custom-theme:ro
+    networks:
+      - rexroad_vehicle_test_net
+
+  wpcli:
+    image: wordpress:cli-php8.3
+    depends_on:
+      - db
+      - wordpress
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: rexroad_vehicle_test
+      WORDPRESS_DB_USER: rexroad_test
+      WORDPRESS_DB_PASSWORD: local_only_test_pw
+    volumes:
+      - wp_html:/var/www/html
+      - ../rexroad-custom-theme:/var/www/html/wp-content/themes/rexroad-custom-theme:ro
+      - ./seed:/seed:ro
+      - ../editorial-workspace:/editorial-workspace:ro
+    entrypoint: ["tail", "-f", "/dev/null"]
+    networks:
+      - rexroad_vehicle_test_net
+
+networks:
+  rexroad_vehicle_test_net:
+    driver: bridge
+
+volumes:
+  rexroad_vehicle_test_db:
+  wp_html:

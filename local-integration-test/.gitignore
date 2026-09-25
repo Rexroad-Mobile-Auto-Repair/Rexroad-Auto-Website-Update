@@ -1,0 +1,3 @@
+# Disposable run output only — never commit rendered pages, seed IDs,
+# or screenshots from this harness.
+artifacts/
