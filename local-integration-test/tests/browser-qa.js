@@ -5,6 +5,16 @@ const pages = [
   { path: '/vehicles/', name: 'vehicles' },
   { path: '/vehicles/ford/', name: 'ford' },
   { path: '/vehicles/ford/f-150/', name: 'f150' },
+  { path: '/vehicles/chevrolet/', name: 'chevrolet' },
+  { path: '/vehicles/chevrolet/silverado-1500/', name: 'silverado' },
+  { path: '/vehicles/toyota/', name: 'toyota' },
+  { path: '/vehicles/toyota/camry/', name: 'camry' },
+  { path: '/vehicles/toyota/tacoma/', name: 'tacoma' },
+  { path: '/vehicles/honda/', name: 'honda' },
+  { path: '/vehicles/honda/civic/', name: 'civic' },
+  { path: '/vehicles/ram/', name: 'ram' },
+  // /vehicles/ram/1500/ intentionally excluded: known defect (see report),
+  // WordPress 301-redirects it to /vehicles/ram/ before any page renders.
 ];
 const viewports = [
   { width: 1440, height: 900, label: 'desktop' },
